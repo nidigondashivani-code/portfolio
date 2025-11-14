@@ -1,0 +1,812 @@
+/* ================= GLOBAL VARIABLES ================= */
+
+:root{
+  --bg1:#0f0e26;
+  --bg2:#241e4e;
+  --card:#ffffff0a;
+  --accent1:#7c5cff;
+  --accent2:#3ddc97;
+  --muted:#d2d6f8;
+  --glass:#ffffff10;
+  --max-width:1100px;
+  --transition:350ms cubic-bezier(.22, .9, .35, 1);
+}
+
+/* Light Mode */
+html.light{
+  --bg1:#f8fafc;
+  --bg2:#eef2ff;
+  --card:#0b12202a;
+  --accent1:#5b21b6;
+  --accent2:#059669;
+  --muted:#1f2937;
+  --glass:#00000008;
+  color-scheme: light;
+  color:#1a1a1a;
+}
+
+html.light body,
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light p,
+html.light a{
+  color:#1a1a1a !important;
+}
+
+html.light .big-card,
+html.light .project-card,
+html.light .contact-card{
+  background:#ffffffea !important;
+  color:#1a1a1a !important;
+  border:1px solid #00000015;
+}
+
+/* ================= RESET ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins", sans-serif;
+}
+
+body{
+  background:radial-gradient(circle at 20% 20%, var(--bg2), var(--bg1));
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* ================= SCROLL PROGRESS ================= */
+
+#progressBar{
+  position:fixed;
+  left:0;
+  top:0;
+  height:4px;
+  width:0;
+  background:linear-gradient(90deg, var(--accent1), var(--accent2));
+  z-index:3500;
+  transition:width .1s linear;
+}
+
+/* ================= PRELOADER ================= */
+
+.preloader{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at 50% 40%, rgba(255,255,255,0.03), rgba(0,0,0,0.3));
+  z-index:4000;
+}
+
+.loader-inner{
+  display:flex;
+  gap:12px;
+  align-items:end;
+  margin-bottom:16px;
+}
+
+.loader-inner .bar{
+  width:12px;
+  height:40px;
+  background:linear-gradient(180deg, var(--accent1), var(--accent2));
+  border-radius:6px;
+  animation:wave 900ms ease-in-out infinite;
+  box-shadow:0 8px 20px rgba(124,92,255,0.25);
+}
+
+.b1{animation-delay:0ms}
+.b2{animation-delay:120ms}
+.b3{animation-delay:240ms}
+.b4{animation-delay:360ms}
+.b5{animation-delay:480ms}
+
+@keyframes wave{
+  0%{height:16px;opacity:.6;transform:translateY(8px);}
+  50%{height:64px;opacity:1;transform:translateY(0);}
+  100%{height:16px;opacity:.6;transform:translateY(8px);}
+}
+
+.loader-text{
+  font-size:20px;
+  font-weight:600;
+  color:var(--muted);
+}
+
+#dot{
+  animation:dotAnim 1s steps(4, end) infinite;
+}
+
+@keyframes dotAnim{
+  0%{opacity:0}
+  25%{opacity:1}
+  50%{opacity:0}
+}
+
+/* ================= NAVBAR ================= */
+
+.floating-nav{
+  position:fixed;
+  top:18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 40px);
+  max-width:1200px;
+  background:var(--glass);
+  padding:12px 20px;
+  border-radius:16px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.4);
+  z-index:3000;
+  transition:var(--transition);
+}
+
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* Nav Username Typing + Slide */
+.nav-username{
+  font-size:20px;
+  font-weight:700;
+  color:var(--muted);
+}
+
+/* Typing + Slide combination */
+.typing-slide{
+  white-space:nowrap;
+  overflow:hidden;
+  border-right:3px solid var(--accent1);
+  opacity:0;
+  transform:translateY(10px);
+  animation:
+    slideIn .6s ease forwards,
+    typing 2.1s steps(30) forwards .4s,
+    blinkCursor .7s infinite 0.3s;
+}
+
+@keyframes typing{
+  from{width:0;}
+  to{width:100%;}
+}
+
+/* --- hide cursor after typing finished --- */
+.typing-done {
+  border-right: 0 !important;     /* remove cursor */
+  animation: none !important;     /* stop any blinking */
+}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* Hover Glow */
+.nav-brand:hover .nav-username{
+  text-shadow:0 0 10px var(--accent1), 0 0 16px var(--accent2);
+  color:#fff;
+}
+
+/* Nav Links */
+.nav-center{
+  display:flex;
+  gap:18px;
+  align-items:center;
+}
+
+.nav-center a{
+  text-decoration:none;
+  color:var(--muted);
+  font-weight:700;
+  font-size:16px;
+  position:relative;
+  transition:.3s;
+}
+
+.nav-center a:hover{
+  color:#fff;
+  text-shadow:0 0 8px var(--accent1);
+}
+
+/* Underline animation */
+.nav-center a::after{
+  content:"";
+  position:absolute;
+  bottom:-4px;
+  left:50%;
+  width:0%;
+  height:3px;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  border-radius:3px;
+  transition:.3s;
+}
+
+.nav-center a:hover::after{
+  width:60%;
+}
+
+/* ================= SECTIONS ================= */
+
+.section{
+  padding:120px 18px 80px;
+}
+
+.centered{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.max-width{
+  max-width:900px;
+  margin:auto;
+}
+
+.section-head{
+  font-size:32px;
+  margin-bottom:10px;
+  color:var(--muted);
+}
+
+/* ================= HERO ================= */
+
+.avatar-large{
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid #ffffff22;
+  box-shadow:0 14px 60px #7c5cff40;
+  transition:.6s;
+}
+
+.hero-title{
+  font-size:48px;
+  margin-top:20px;
+}
+
+.hero-sub{
+  font-size:22px;
+  margin-top:6px;
+  color:var(--muted);
+}
+/* ================= RESUME BUTTON ANIMATIONS ================= */
+
+/* Base styling stays same */
+.resume-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: 0.4s ease;
+}
+
+/* Soft floating animation */
+.resume-btn {
+  animation: resumeFloat 3.8s ease-in-out infinite;
+}
+
+@keyframes resumeFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* Glow on hover */
+.resume-btn:hover {
+  transform: scale(1.12);
+  box-shadow:
+    0 0 15px rgba(124,92,255,0.6),
+    0 0 35px rgba(61,220,151,0.5),
+    0 0 65px rgba(124,92,255,0.4);
+}
+
+/* Shine sweep animation */
+.resume-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.7s;
+  z-index: -1;
+}
+
+/* Shine on hover */
+.resume-btn:hover::before {
+  left: 120%;
+}
+
+/* Pulsing glow ring */
+.resume-btn::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  width: 300px;
+  height: 300ox;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle,
+    rgba(124, 92, 255, 0.45),
+    rgba(61,220,151,0.45),
+    transparent 70%
+  );
+  opacity: 0;
+  z-index: -2;
+  transition: 0.5s ease;
+}
+
+.resume-btn:hover::after {
+  opacity: 0.45;
+}
+
+/* ================= BIG CARDS ================= */
+
+.big-card,
+.project-card,
+.contact-card{
+  width:100%;
+  max-width:780px;
+  background:var(--card);
+  padding:28px;
+  margin:18px 0;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  transform:translateY(30px);
+  opacity:0;
+  transition:var(--transition);
+}
+
+.big-card:hover,
+.project-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 28px 80px rgba(0,0,0,0.35);
+}
+/* ================= GLOW EFFECT FOR SKILL CARDS ================= */
+
+#skills .big-card {
+  transition: 0.45s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Neon glow on hover */
+#skills .big-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  
+  box-shadow:
+    0 0 20px rgba(124, 92, 255, 0.45),
+    0 0 35px rgba(61, 220, 151, 0.35),
+    0 0 65px rgba(124, 92, 255, 0.35);
+  
+  border-color: rgba(124, 92, 255, 0.45);
+}
+
+/* Glow effect for each skill-pill */
+.skill-pill {
+  transition: 0.3s ease;
+}
+
+.skill-pill:hover {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.45), rgba(61, 220, 151, 0.35));
+  color: #fff;
+  box-shadow:
+    0 0 12px rgba(124, 92, 255, 0.55),
+    0 0 25px rgba(61, 220, 151, 0.45);
+  transform: scale(1.15);
+}
+
+.card-row{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.card-logo{
+  width:150px;
+  height:150px;
+  object-fit:cover;
+  border-radius:14px;
+}
+/* ================= GLOW EFFECT FOR QUALIFICATION CARDS ================= */
+
+#qualifications .big-card {
+  transition: 0.45s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Neon glow on hover */
+#qualifications .big-card:hover {
+  transform: translateY(-10px) scale(1.03);
+
+  box-shadow:
+    0 0 20px rgba(124, 92, 255, 0.45),
+    0 0 35px rgba(61, 220, 151, 0.40),
+    0 0 65px rgba(124, 92, 255, 0.38);
+
+  border-color: rgba(124, 92, 255, 0.45);
+}
+
+/* Glow for qualification logo also */
+#qualifications .card-logo {
+  transition: 0.35s ease;
+}
+
+#qualifications .big-card:hover .card-logo {
+  transform: scale(1.06);
+  box-shadow:
+    0 0 15px rgba(124, 92, 255, 0.55),
+    0 0 25px rgba(61, 220, 151, 0.45);
+}
+
+/* ================= SKILLS ================= */
+
+.skill-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:16px;
+}
+
+.skill-pill{
+  padding:10px 14px;
+  background:rgba(255,255,255,0.06);
+  border-radius:10px;
+  font-size:18px;
+}
+
+/* ================= PROJECT CARDS ================= */
+
+.project-actions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.btn{
+  border-radius:12px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#fff;
+  border:none;
+  font-weight:700;
+  padding:10px 14px;
+}
+
+.btn-outline{
+  background:transparent;
+  border:2px solid rgba(255,255,255,0.2);
+  color:var(--muted);
+}
+/* Project card hover highlight */
+.project-card {
+  transition: 0.4s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 25px rgba(124, 92, 255, 0.45), 0 0 50px rgba(61, 220, 151, 0.35);
+  border-color: rgba(124,92,255,0.4) !important;
+}
+
+/* Project image style */
+.project-img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 14px;
+}
+/* ================= CERTIFICATIONS ================= */
+
+.cert-card {
+  cursor: pointer;
+  transition: 0.45s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cert-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow:
+    0 0 20px rgba(124,92,255,0.45),
+    0 0 40px rgba(61,220,151,0.35),
+    0 0 70px rgba(124,92,255,0.35);
+  border-color: rgba(124,92,255,0.4);
+}
+
+.cert-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cert-thumb {
+  width: 160px;
+  height: 160px;
+  background: linear-gradient(145deg, #25203d, #141126);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 0 0 20px rgba(124,92,255,0.3),
+    0 0 25px rgba(124,92,255,0.4);
+  transition: 0.3s ease;
+}
+
+.cert-card:hover .cert-thumb {
+  box-shadow:
+    inset 0 0 30px rgba(124,92,255,0.5),
+    0 0 35px rgba(61,220,151,0.4);
+  transform: scale(1.05);
+}
+
+.pdf-icon {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--accent1);
+}
+
+.cert-info h3 {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.cert-info p {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* Light mode adjustments */
+html.light .cert-thumb {
+  background: #e2e8f0;
+  box-shadow:
+    inset 0 0 8px rgba(91,33,182,0.2),
+    0 0 12px rgba(91,33,182,0.3);
+}
+
+html.light .pdf-icon {
+  color: #5b21b6;
+}
+
+/* ================= CONTACT ================= */
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:20px;
+}
+
+.contact-card input,
+.contact-card textarea{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.2);
+  color:white;
+  margin-top:6px;
+}
+
+.submit-btn{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  padding:10px 14px;
+  border:none;
+  border-radius:12px;
+  margin-top:10px;
+  color:white;
+}
+
+/* ================= VIDEO MODAL ================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:4000;
+}
+
+.modal-card{
+  width:90%;
+  max-width:900px;
+  background:#0f1228;
+  padding:18px;
+  border-radius:14px;
+}
+
+.modal-body video{
+  width:100%;
+  border-radius:12px;
+}
+
+/* ================= ANIMATION TRIGGER ================= */
+
+.card-animated.in-view{
+  transform:none;
+  opacity:1;
+}
+
+/* ================= TILT EFFECT ================= */
+
+.tilt{
+  transition:transform 600ms cubic-bezier(.22,.9,.35,1);
+}
+
+.tilt:hover{
+  transform:perspective(900px) rotateX(3deg) rotateY(-3deg) translateY(-6px);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:980px){
+  .nav-center{display:none}
+  .avatar-large{width:220px;height:220px}
+  .card-logo{width:120px;height:120px}
+  .contact-grid{grid-template-columns:1fr}
+}
+/* HIRE ME BUTTON */
+.hire-btn {
+  margin-top: 12px;
+  padding: 12px 26px;
+  display: inline-block;
+  font-weight: 700;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #ff6b6b, #ff9f43);
+  color: #fff;
+  text-decoration: none;
+  transition: 0.35s ease;
+  box-shadow: 0 0 18px rgba(255, 107, 107, 0.45);
+}
+
+.hire-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 30px rgba(255, 107, 107, 0.55);
+}
+
+/* HERO DESC */
+.hero-desc {
+  max-width: 700px;
+  font-size: 18px;
+  margin-top: 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+/* ================= GITHUB LOGO GLOW ANIMATION ================= */
+
+.git-icon {
+  transition: 0.35s ease;
+  filter: drop-shadow(0 0 0px var(--accent1));
+  margin-right: 6px;
+}
+
+/* HOVER EFFECT */
+.project-github:hover .git-icon {
+  transform: scale(1.22);
+  filter: drop-shadow(0 0 8px var(--accent1))
+          drop-shadow(0 0 14px var(--accent2));
+}
+
+/* LIGHT MODE FIX */
+html.light .git-icon {
+  filter: drop-shadow(0 0 0px #5b21b6);
+}
+
+html.light .project-github:hover .git-icon {
+  filter: drop-shadow(0 0 12px #5b21b6)
+          drop-shadow(0 0 18px #059669);
+}
+/* ============================================
+   UPGRADED PREMIUM BUTTON ANIMATION (BOTH)
+   ============================================ */
+
+.resume-btn,
+.hire-btn {
+  position: relative;
+  display: inline-block;
+  padding: 16px 40px;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.35s ease;
+  transform-style: preserve-3d;
+}
+
+/* 3D POP EFFECT */
+.resume-btn:hover,
+.hire-btn:hover {
+  transform: translateY(-6px) scale(1.12);
+}
+
+/* Neon Glow */
+.resume-btn:hover,
+.hire-btn:hover {
+  box-shadow:
+    0 0 20px rgba(124, 92, 255, 0.8),
+    0 0 40px rgba(61, 220, 151, 0.7),
+    0 0 60px rgba(124, 92, 255, 0.6);
+}
+
+/* Shine sweep */
+.resume-btn::before,
+.hire-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: 0.6s;
+}
+
+.resume-btn:hover::before,
+.hire-btn:hover::before {
+  left: 120%;
+}
+
+/* Ripple Effect */
+.resume-btn::after,
+.hire-btn::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 50%;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.5s ease-out;
+}
+
+/* Trigger ripple on click */
+.resume-btn:active::after,
+.hire-btn:active::after {
+  transform: scale(14);
+  opacity: 0;
+}
+
+/* Soft pulse every 5 seconds */
+@keyframes softPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 14px rgba(124,92,255,0.25),
+      0 0 25px rgba(61,220,151,0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 24px rgba(124,92,255,0.45),
+      0 0 40px rgba(61,220,151,0.35);
+  }
+}
+
+.resume-btn,
+.hire-btn {
+  animation: softPulse 5s infinite ease-in-out;
+}
